@@ -30,6 +30,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           context: smart-home-monolith
           push: true
-          tags: ghcr.io/Winte256/architecture-3
+          tags: ghcr.io/winte256/architecture-3
           cache-from: type=gha
           cache-to: type=gha,mode=max
