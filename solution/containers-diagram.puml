@@ -1,0 +1,50 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Container diagram for Smart home system
+
+Person(customer, "Customer", "A smarthome customer")
+  
+Container(sensor, "Sensor", "heating temperature sensor")
+Container(webApp, "Web application", "React", "Allows manage home climate")
+
+System_Boundary(c1, "Smart home system") {
+  
+  Container(staticServer, "Static Content Server", "Nginx, S3, CDN", "Serves static files (HTML, CSS, JS) for SPA")
+
+  System_Boundary(c2, "cluster") {
+    
+    Container(bff, "Backend for frontend", "Node.js", "Rest api for rect spa")
+    Container(telemetry, "Telemetry", "JAVA", "Telemetry service")
+    Container(device, "Device", "JAVA", "Device service")
+
+    Container(kuskGateway, "Kusk API Gateway", "Kusk", "Manages and routes API requests to microservices")
+    
+    Container(kafka, "Kafka", "Apache Kafka", "Message broker for asynchronous communication")
+    ContainerDb(db, "Database", "PostgreSQL", "Stores sensor data, user data, device data")
+  }
+
+}
+
+Rel(customer, staticServer, "Requests static files", "HTTPS")
+Rel(customer, webApp, "Interacts with", "HTTPS")
+Rel(customer, sensor, "Customers have sensors in home")
+
+Rel(webApp, kuskGateway, "API requests", "HTTPS/REST")
+
+Rel(kuskGateway, bff, "Routes requests", "HTTP (via Service)")
+
+Rel(telemetry, db, "Reads and writes data", "JDBC/SSL")
+Rel(device, db, "Reads and writes data", "JDBC/SSL")
+
+Rel(bff, kafka, "Produces and Consumes events", "Kafka Protocol")
+Rel(telemetry, kafka, "Produces and Consumes events", "Kafka Protocol")
+Rel(device, kafka, "Produces and Consumes events", "Kafka Protocol")
+
+Rel(device, sensor, "Requests data", "MQTT")
+
+
+@enduml
