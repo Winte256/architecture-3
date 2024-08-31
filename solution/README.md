@@ -23,6 +23,11 @@
   - `password` - пароль
   - `role` - роль
 
+- `House` - дом
+  - `id` - идентификатор
+  - `address` - адрес
+  - `owner_id` - идентификатор владельца
+
 ### Telemetry Service
 - `Telemetry` - телеметрия
   - `id` - идентификатор
@@ -43,10 +48,6 @@
   - `id` - идентификатор
   - `name` - название
   - `description` - описание
-
-- `House` - дом
-  - `id` - идентификатор
-  - `address` - адрес
 
 ## C4 Context Diagram
 
