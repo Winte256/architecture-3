@@ -1,0 +1,25 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+' uncomment the following line and comment the first to use locally
+' !include C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+title System Context diagram for Smar home system
+
+System_Boundary(c1, "Customer home") {
+  Person(customer, "Customer", "A smarthome customer")
+  System(sensor, "Sensor", "heating temperature sensor")
+}
+
+Person(administrator, "Administrator", "Maintain and install sensors to customer")
+System(java_monolith, "Smart home system", "Allows manage home climate")
+
+
+
+Rel(customer, java_monolith, "Uses")
+Rel(java_monolith, sensor, "Get temperature data")
+Rel(administrator, customer, "Set up sensors to customer")
+Rel(administrator, sensor, "Maintain sensors")
+
+@enduml
