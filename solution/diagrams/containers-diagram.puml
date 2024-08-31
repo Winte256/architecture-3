@@ -18,15 +18,14 @@ System_Boundary(c1, "Smart home system") {
   System_Boundary(c2, "cluster") {
     
     Container(bff, "Backend for frontend", "Node.js", "Rest api for rect spa")
-    Container(telemetry, "Telemetry", "JAVA", "Telemetry service")
-    Container(device, "Device", "JAVA", "Device service")
+    Container(telemetry, "Telemetry", "Node.js", "Telemetry service")
+    Container(device, "Device", "Node.js", "Device service")
 
     Container(kuskGateway, "Kusk API Gateway", "Kusk", "Manages and routes API requests to microservices")
     
     Container(kafka, "Kafka", "Apache Kafka", "Message broker for asynchronous communication")
     ContainerDb(db, "Database", "PostgreSQL", "Stores sensor data, user data, device data")
   }
-
 }
 
 Rel(customer, staticServer, "Requests static files", "HTTPS")

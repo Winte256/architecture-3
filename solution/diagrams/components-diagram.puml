@@ -1,0 +1,78 @@
+@startuml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Component diagram for Smart home system
+
+Person(customer, "Customer", "A smarthome customer")
+
+Container(webApp, "Web application", "React", "Allows manage home climate")
+Container(bff, "Backend for frontend", "Node.js", "Rest api for rect spa")
+Container(staticServer, "Static Content Server", "Nginx, S3, CDN", "Serves static files (HTML, CSS, JS) for SPA")
+Container(sensor, "Sensor", "heating temperature sensor")
+Container(kuskGateway, "Kusk API Gateway", "Kusk", "Manages and routes API requests to microservices")
+Container(kafka, "Kafka", "Apache Kafka", "Message broker for asynchronous communication")
+ContainerDb(db, "Database", "PostgreSQL", "Stores sensor data, user data, device data")
+
+Container_Boundary(webApp, "Web application", "Allows manage home climate") {
+  Component(homePanel, "Home panel", "React", "Main panel for home climate management")
+  Component(userProfile, "User profile", "React", "User profile management")
+  Component(devicesList, "Devices list", "React", "List of devices")
+  Component(deviceDetails, "Device details", "React", "Details of device")
+  Component(analytics, "Analytics", "React", "Analytics for home climate")  
+}
+
+Container_Boundary(telemetry, "Telemetry") {
+  Component(telemetrySensorData, "Sensor data", "Node.js", "Recieve data from sensors")
+  Component(telemetryDataProcessing, "Data processing", "Node.js", "Process data")
+  Component(telemetryDataAnalysis, "Data analysis", "Node.js", "Analyze data")
+  Component(telemetryAlerts, "Alerts", "Node.js", "Send alerts and notifications")
+  Component(telemetryDataStorage, "Data storage", "Node.js", "Store data in db")
+  
+}
+
+Container_Boundary(device, "Device") {
+  Component(deviceData, "Device data", "Node.js", "Request data from devices")
+  Component(deviceManagement, "Device management", "Node.js", "Manage devices")
+  Component(deviceCommands, "Device commands", "Node.js", "Send commands to device")
+  Component(deviceDataStorage, "Data storage", "Node.js", "Store data in db")
+}
+
+Rel(customer, staticServer, "Requests static files", "HTTPS")
+Rel(customer, webApp, "Interacts with", "HTTPS")
+Rel(customer, sensor, "Customers have sensors in home")
+Rel(webApp, kuskGateway, "API requests", "HTTPS/REST")
+Rel(kuskGateway, bff, "Routes requests", "HTTP (via Service)")
+Rel(bff, kafka, "Produces and Consumes events", "Kafka Protocol")
+
+' db Rels
+Rel(telemetryDataStorage, db, "Reads and writes data", "JDBC/SSL")
+Rel(deviceDataStorage, db, "Reads and writes data", "JDBC/SSL")
+
+' telemetry components internal Rels
+Rel(telemetrySensorData, telemetryDataProcessing, "Sends data")
+Rel(telemetryDataProcessing, telemetryDataAnalysis, "Sends data")
+Rel(telemetryDataAnalysis, telemetryAlerts, "Sends data")
+Rel(telemetryDataProcessing, telemetryDataStorage, "Sends data")
+
+' telemetry components external Rels
+Rel(telemetrySensorData, kafka, "Consumes events", "Kafka Protocol")
+Rel(telemetryAlerts, kafka, "Produces events", "Kafka Protocol")
+
+
+
+' device components internal Rels
+Rel(deviceData, deviceManagement, "")
+Rel(deviceCommands, deviceManagement, "")
+Rel(deviceManagement, deviceDataStorage, "")
+Rel(deviceManagement, deviceCommands, "")
+
+' device components external Rels
+Rel(deviceData, kafka, "Produces events", "Kafka Protocol")
+Rel(deviceCommands, sensor, "Sends commands", "MQTT")
+Rel(deviceData, sensor, "Requests data", "MQTT")
+Rel(deviceManagement, kafka, "Consumes and Produces events", "Kafka Protocol")
+
+@enduml
