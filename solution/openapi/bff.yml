@@ -1,0 +1,189 @@
+openapi: 3.0.0
+info:
+  title: Smart Home System API
+  description: API для управления домашним климатом через Web приложение.
+  version: 1.0.0
+servers:
+  - url: https://api.smarthome.com/v1
+    description: Основной сервер API
+
+paths:
+  /devices:
+    post:
+      summary: add new device
+      operationId: addDevice
+      tags:
+        - Devices
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Название устройства
+                type:
+                  type: string
+                  description: Тип устройства (например, термостат, сенсор)
+                status:
+                  type: string
+                  description: Статус устройства (включено, выключено)
+      responses:
+        '200':
+          description: Устройство успешно добавлено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+    get:
+      summary: Получить список устройств
+      operationId: getDevices
+      tags:
+        - Devices
+      responses:
+        '200':
+          description: Список устройств
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
+
+  /devices/{deviceId}:
+    get:
+      summary: Получить информацию об устройстве
+      operationId: getDeviceById
+      tags:
+        - Devices
+      
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          description: Идентификатор устройства
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Детали устройства
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceDetails'
+    put:
+      summary: Обновить информацию об устройстве
+      operationId: updateDevice
+      tags:
+        - Devices
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          description: Идентификатор устройства
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Название устройства
+                status:
+                  type: string
+                  description: Статус устройства (включено, выключено)
+      responses:
+        '200':
+          description: Информация об устройстве успешно обновлена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceDetails'
+
+  /analytics:
+    get:
+      summary: Получить аналитические данные по устройствам
+      operationId: getAnalytics
+      tags:
+        - Analytics
+      responses:
+        '200':
+          description: Аналитические данные
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsData'
+components:
+  schemas:
+    Device:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - type
+        - status
+      properties:
+        id:
+          type: string
+          description: Уникальный идентификатор устройства
+        name:
+          type: string
+          description: Название устройства
+        type:
+          type: string
+          description: Тип устройства (например, термостат, сенсор)
+        status:
+          type: string
+          pattern: '^(on|off)$'
+          description: Статус устройства (включено, выключено)
+
+    DeviceDetails:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        status:
+          type: string
+        lastCommunication:
+          type: string
+          format: date-time
+          description: Время последнего взаимодействия с устройством
+        metrics:
+          type: object
+          description: Показатели устройства (например, температура, влажность)
+
+    AnalyticsData:
+      type: object
+      properties:
+        deviceId:
+          type: string
+          description: Идентификатор устройства
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              timestamp:
+                type: string
+                format: date-time
+              metric:
+                type: string
+              value:
+                type: number
+
+tags:
+  - name: Devices
+    description: Методы для управления устройствами
+  - name: Analytics
+    description: Методы для получения аналитических данных

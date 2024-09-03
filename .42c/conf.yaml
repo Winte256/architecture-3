@@ -1,0 +1,3 @@
+apis:
+  solution/openapi/bff.yml:
+    alias: smart-home-system-api

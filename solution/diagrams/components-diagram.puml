@@ -30,7 +30,6 @@ Container_Boundary(telemetry, "Telemetry") {
   Component(telemetryDataAnalysis, "Data analysis", "Node.js", "Analyze data")
   Component(telemetryAlerts, "Alerts", "Node.js", "Send alerts and notifications")
   Component(telemetryDataStorage, "Data storage", "Node.js", "Store data in db")
-  
 }
 
 Container_Boundary(device, "Device") {
@@ -60,8 +59,6 @@ Rel(telemetryDataProcessing, telemetryDataStorage, "Sends data")
 ' telemetry components external Rels
 Rel(telemetrySensorData, kafka, "Consumes events", "Kafka Protocol")
 Rel(telemetryAlerts, kafka, "Produces events", "Kafka Protocol")
-
-
 
 ' device components internal Rels
 Rel(deviceData, deviceManagement, "")

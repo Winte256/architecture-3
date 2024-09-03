@@ -1,0 +1,101 @@
+asyncapi: '3.0.0'
+info:
+  title: Telemetry Service API
+  version: '1.0.0'
+  description: AsyncAPI specification for the telemetry service in the smart home system.
+  contact:
+    name: API Support
+    url: http://www.smarthome.com/support
+    email: support@smarthome.com
+
+defaultContentType: application/json
+
+servers:
+  kafkaServer:
+    host: telemetry.smarthome.com
+    protocol: kafka
+    description: Kafka server for the telemetry service
+    tags:
+      - name: env:production
+        description: Production environment
+      - name: visibility:public
+        description: This resource is available to all users
+
+channels:
+  deviceData:
+    address: device/data
+    description: Channel for receiving device data
+    messages:
+      deviceDataMessage:
+        $ref: '#/components/messages/DeviceDataMessage'
+
+  alertsNotifications:
+    address: alerts/notifications
+    description: Channel for sending alerts and notifications
+    messages:
+      alertMessage:
+        $ref: '#/components/messages/AlertMessage'
+
+operations:
+  receiveDeviceData:
+    action: receive
+    channel:
+      $ref: '#/channels/deviceData'
+    summary: Receive data from devices
+    messages:
+      - $ref: '#/channels/deviceData/messages/deviceDataMessage'
+
+  sendAlerts:
+    action: send
+    channel:
+      $ref: '#/channels/alertsNotifications'
+    summary: Send alerts and notifications
+    messages:
+      - $ref: '#/channels/alertsNotifications/messages/alertMessage'
+
+components:
+  messages:
+    DeviceDataMessage:
+      name: DeviceDataMessage
+      title: Device Data Message
+      summary: Message containing data from devices.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/DeviceDataSchema'
+
+    AlertMessage:
+      name: AlertMessage
+      title: Alert Message
+      summary: Message containing alert information.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/AlertSchema'
+
+  schemas:
+    DeviceDataSchema:
+      type: object
+      properties:
+        deviceId:
+          type: string
+          description: ID of the device
+        timestamp:
+          type: string
+          format: date-time
+          description: Time when the data was recorded
+        temperature:
+          type: number
+          description: Temperature value from the device
+
+    AlertSchema:
+      type: object
+      properties:
+        alertId:
+          type: string
+          description: ID of the alert
+        timestamp:
+          type: string
+          format: date-time
+          description: Time when the alert was generated
+        message:
+          type: string
+          description: Alert message
