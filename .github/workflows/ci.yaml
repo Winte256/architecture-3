@@ -26,13 +26,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Convert repository owner to lowercase
+        id: vars
+        run: echo "::set-output name=owner::${{ github.repository_owner }}"
+
       - name: Build and push deviceService image
         uses: docker/build-push-action@v4
         with:
           context: ./solution/services/deviceService
           file: ./solution/services/deviceService/Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/device-service:latest
+          tags: ghcr.io/${{ steps.vars.outputs.owner }}/device-service:latest
 
       - name: Build and push telemetryService image
         uses: docker/build-push-action@v4
@@ -40,4 +44,4 @@ jobs:
           context: ./solution/services/telemetryService
           file: ./solution/services/telemetryService/Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/telemetry-service:latest
+          tags: ghcr.io/${{ steps.vars.outputs.owner }}/telemetry-service:latest
