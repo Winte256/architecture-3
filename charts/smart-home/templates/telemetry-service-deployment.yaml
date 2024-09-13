@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telemetry-service
+  labels:
+    app: telemetry-service
+spec:
+  replicas: {{ .Values.telemetryService.replicaCount }}
+  selector:
+    matchLabels:
+      app: telemetry-service
+  template:
+    metadata:
+      labels:
+        app: telemetry-service
+    spec:
+      containers:
+        - name: telemetry-service
+          image: {{ .Values.telemetryService.image.repository }}:{{ .Values.telemetryService.image.tag }}
+          ports:
+            - containerPort: {{ .Values.telemetryService.service.port }}
+          env:
+            - name: NODE_ENV
+              value: "{{ .Values.telemetryService.env.NODE_ENV }}"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: telemetry-service
+spec:
+  selector:
+    app: telemetry-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: {{ .Values.telemetryService.service.port }}
+  type: {{ .Values.telemetryService.service.type }}

@@ -1,0 +1,34 @@
+deviceService:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/winte256/device-service
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 3000
+  env:
+    NODE_ENV: production
+
+telemetryService:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/winte256/telemetry-service
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 3000
+  env:
+    NODE_ENV: production
+
+kafka:
+  replicaCount: 1
+  zookeeper:
+    image: wurstmeister/zookeeper
+    tag: latest
+  kafka:
+    image: wurstmeister/kafka
+    tag: latest
+    servicePort: 9092
+    zookeeperConnect: zookeeper:2181

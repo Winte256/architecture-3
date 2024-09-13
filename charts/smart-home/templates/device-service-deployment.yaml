@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: device-service
+  labels:
+    app: device-service
+spec:
+  replicas: {{ .Values.deviceService.replicaCount }}
+  selector:
+    matchLabels:
+      app: device-service
+  template:
+    metadata:
+      labels:
+        app: device-service
+    spec:
+      containers:
+        - name: device-service
+          image: {{ .Values.deviceService.image.repository }}:{{ .Values.deviceService.image.tag }}
+          ports:
+            - containerPort: {{ .Values.deviceService.service.port }}
+          env:
+            - name: NODE_ENV
+              value: "{{ .Values.deviceService.env.NODE_ENV }}"
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: device-service
+spec:
+  selector:
+    app: device-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: {{ .Values.deviceService.service.port }}
+  type: {{ .Values.deviceService.service.type }}
