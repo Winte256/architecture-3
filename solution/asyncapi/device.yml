@@ -12,7 +12,7 @@ defaultContentType: application/json
 
 servers:
   kafkaBroker:
-    host: broker.smarthome.com:9092
+    host: kafka:9092
     protocol: kafka
     description: Kafka broker for device service
     tags:

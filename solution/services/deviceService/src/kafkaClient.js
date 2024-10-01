@@ -1,7 +1,7 @@
 const kafka = require('kafka-node');
 const { handleDeviceCreated, handleDeviceUpdated, handleDeviceDeleted } = require('./deviceService');
 
-const kafkaHost = 'broker.smarthome.com:9092';
+const kafkaHost = 'kafka:9092';
 let producer;
 let consumer;
 
