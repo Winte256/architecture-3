@@ -26,8 +26,8 @@ const initKafkaConsumer = () => {
   return new Promise((resolve, reject) => {
     const client = new kafka.KafkaClient({ kafkaHost });
     const topics = [
-      { topic: 'telemetry/data' },
-      { topic: 'telemetry/alert' },
+      { topic: 'telemetry.data' },
+      { topic: 'telemetry.alert' },
     ];
 
     consumer = new kafka.Consumer(client, topics, { autoCommit: true });
@@ -35,10 +35,10 @@ const initKafkaConsumer = () => {
     consumer.on('message', (message) => {
       const parsedMessage = JSON.parse(message.value);
       switch (message.topic) {
-        case 'telemetry/data':
+        case 'telemetry.data':
           handleTelemetryData(parsedMessage);
           break;
-        case 'telemetry/alert':
+        case 'telemetry.alert':
           handleTelemetryAlert(parsedMessage);
           break;
         default:

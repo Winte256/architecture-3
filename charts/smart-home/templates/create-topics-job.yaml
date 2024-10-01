@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-kafka-topics
+  labels:
+    app: { { include "smart-home.name" . } }
+spec:
+  template:
+    spec:
+      containers:
+        - name: kafka-topics
+          image: wurstmeister/kafka:latest
+          command:
+            - sh
+            - -c
+            - |
+              echo "Waiting for Kafka to be ready..."
+
+              sleep 30
+
+              kafka-topics.sh --create --topic device.created --bootstrap-server kafka:9092 --partitions 1 --replication-factor 1
+              kafka-topics.sh --create --topic device.updated --bootstrap-server kafka:9092 --partitions 1 --replication-factor 1
+              kafka-topics.sh --create --topic device.firmware --bootstrap-server kafka:9092 --partitions 1 --replication-factor 1
+              kafka-topics.sh --create --topic device.deleted --bootstrap-server kafka:9092 --partitions 1 --replication-factor 1
+              kafka-topics.sh --create --topic telemetry.data --bootstrap-server kafka:9092 --partitions 1 --replication-factor 1
+              kafka-topics.sh --create --topic telemetry.alert --bootstrap-server kafka:9092 --partitions 1 --replication-factor 1
+      restartPolicy: OnFailure
+  backoffLimit: 4

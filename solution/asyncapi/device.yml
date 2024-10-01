@@ -23,28 +23,28 @@ servers:
 
 channels:
   deviceCreated:
-    address: device/created
+    address: device.created
     description: Channel for publishing and subscribing to device creation events
     messages:
       deviceCreatedMessage:
         $ref: '#/components/messages/DeviceCreatedEvent'
 
   deviceUpdated:
-    address: device/updated
+    address: device.updated
     description: Channel for publishing and subscribing to device update events
     messages:
       deviceUpdatedMessage:
         $ref: '#/components/messages/DeviceUpdatedEvent'
 
   deviceDeleted:
-    address: device/deleted
+    address: device.deleted
     description: Channel for publishing and subscribing to device deletion events
     messages:
       deviceDeletedMessage:
         $ref: '#/components/messages/DeviceDeletedEvent'
 
   deviceFirmware:
-    address: device/firmware
+    address: device.firmware
     description: Channel for publishing and subscribing to device firmware update events
     messages:
       deviceFirmwareMessage:

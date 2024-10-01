@@ -52,6 +52,7 @@ spec:
       containers:
         - name: kafka
           image: {{ .Values.kafka.kafka.image }}:{{ .Values.kafka.kafka.tag }}
+          imagePullPolicy: Always
           ports:
             - containerPort: {{ .Values.kafka.kafka.servicePort }}
           env:

@@ -1,7 +1,13 @@
 const kafka = require('kafka-node');
 const { handleDeviceCreated, handleDeviceUpdated, handleDeviceDeleted } = require('./deviceService');
 
-const kafkaHost = 'kafka:9092';
+let kafkaHost = 'localhost:9092';
+
+if (process.env.NODE_ENV === 'production') {
+  kafkaHost = 'kafka:9092';
+}
+
+
 let producer;
 let consumer;
 
@@ -26,9 +32,9 @@ const initKafkaConsumer = () => {
   return new Promise((resolve, reject) => {
     const client = new kafka.KafkaClient({ kafkaHost });
     const topics = [
-      { topic: 'device/created' },
-      { topic: 'device/updated' },
-      { topic: 'device/deleted' },
+      { topic: 'device.created' },
+      { topic: 'device.updated' },
+      { topic: 'device.deleted' },
     ];
 
     consumer = new kafka.Consumer(client, topics, { autoCommit: true });
@@ -36,13 +42,13 @@ const initKafkaConsumer = () => {
     consumer.on('message', (message) => {
       const parsedMessage = JSON.parse(message.value);
       switch (message.topic) {
-        case 'device/created':
+        case 'device.created':
           handleDeviceCreated(parsedMessage);
           break;
-        case 'device/updated':
+        case 'device.updated':
           handleDeviceUpdated(parsedMessage);
           break;
-        case 'device/deleted':
+        case 'device.deleted':
           handleDeviceDeleted(parsedMessage);
           break;
         default:

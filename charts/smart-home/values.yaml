@@ -3,7 +3,7 @@ deviceService:
   image:
     repository: ghcr.io/winte256/device-service
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   service:
     type: ClusterIP
     port: 3000
@@ -15,7 +15,7 @@ telemetryService:
   image:
     repository: ghcr.io/winte256/telemetry-service
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   service:
     type: ClusterIP
     port: 3000

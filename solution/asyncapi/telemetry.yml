@@ -23,7 +23,7 @@ servers:
 
 channels:
   deviceData:
-    address: device/data
+    address: device.data
     description: Channel for receiving device data
     messages:
       deviceDataMessage:

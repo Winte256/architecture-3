@@ -17,6 +17,7 @@ spec:
       containers:
         - name: telemetry-service
           image: {{ .Values.telemetryService.image.repository }}:{{ .Values.telemetryService.image.tag }}
+          imagePullPolicy: Always
           ports:
             - containerPort: {{ .Values.telemetryService.service.port }}
           env:
