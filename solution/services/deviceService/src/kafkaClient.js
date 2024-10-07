@@ -4,7 +4,7 @@ const { handleDeviceCreated, handleDeviceUpdated, handleDeviceDeleted } = requir
 let kafkaHost = 'localhost:9092';
 
 if (process.env.NODE_ENV === 'production') {
-  kafkaHost = 'kafka:9092';
+  kafkaHost = 'smarthome-kafka:9092';
 }
 
 
@@ -79,8 +79,23 @@ const sendMessage = (topic, message) => {
   });
 };
 
+const testKafkaConnection = () => {
+  return new Promise((resolve, reject) => {
+    const client = new kafka.KafkaClient({ kafkaHost });
+    client.on('ready', () => {
+      console.log('Connected to Kafka successfully.');
+      resolve();
+    });
+    client.on('error', (error) => {
+      console.error('Error connecting to Kafka:', error);
+      reject(error);
+    });
+  });
+};
+
 module.exports = {
   initKafkaProducer,
   initKafkaConsumer,
   sendMessage,
+  testKafkaConnection,
 };

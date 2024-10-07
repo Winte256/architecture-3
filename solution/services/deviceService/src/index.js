@@ -1,6 +1,7 @@
-const { initKafkaProducer, initKafkaConsumer } = require('./kafkaClient');
+const { initKafkaProducer, initKafkaConsumer, testKafkaConnection } = require('./kafkaClient');
 
 const startService = async () => {
+  await testKafkaConnection();
   await initKafkaProducer();
   await initKafkaConsumer();
   console.log('Device service is running and connected to Kafka.');

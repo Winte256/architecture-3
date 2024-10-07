@@ -1,0 +1,35 @@
+kafka:  
+  service:
+    type: NodePort  # Используем NodePort для доступа извне
+    port: 9092
+
+  listeners:
+    client:
+      name: CLIENT
+      containerPort: 9092
+      protocol: PLAINTEXT
+      sslClientAuth: ""
+    interbroker:
+      name: INTERNAL
+      containerPort: 9094
+      protocol: PLAINTEXT
+      sslClientAuth: ""
+    external:
+      name: EXTERNAL
+      containerPort: 9095
+      protocol: PLAINTEXT
+      sslClientAuth: ""
+    controller:
+      name: CONTROLLER
+      containerPort: 9093
+      protocol: PLAINTEXT
+      sslClientAuth: ""
+  externalAccess:
+    enabled: true
+    controller:
+      service:
+        domain: localhost
+        type: NodePort
+        nodePorts:
+          - 30094
+

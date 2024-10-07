@@ -1,7 +1,7 @@
 const kafka = require('kafka-node');
 const { handleTelemetryData, handleTelemetryAlert } = require('./telemetryService');
 
-const kafkaHost = 'kafka:9092';
+const kafkaHost = 'smarthome-kafka:9092';
 let producer;
 let consumer;
 
