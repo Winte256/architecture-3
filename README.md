@@ -51,10 +51,10 @@
 
 ## C4 Diagrams
 
-![Containers Diagram](./diagrams/out/solution/diagrams/containers-diagram/containers-diagram.png)
-![Components Diagram](./diagrams/out/solution/diagrams/components-diagram/components-diagram.png)  
-![Er Diagram](./diagrams/out/solution/diagrams/er-diagram/er-diagram.png)
-![Monolith Context Diagram](./diagrams/out/solution/diagrams/monolith-context-diagram/monolith-context-diagram.png)
+![Containers Diagram](./smarthome/diagrams/out/containers-diagram.png)
+![Components Diagram](./smarthome/diagrams/out/components-diagram.png)  
+![Er Diagram](./smarthome/diagrams/out/er-diagram.png)
+![Monolith Context Diagram](./smarthome/diagrams/out/monolith-context-diagram.png)
 
 ## OpenAPI
 
