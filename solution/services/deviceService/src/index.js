@@ -1,6 +1,7 @@
 const { initKafkaProducer, initKafkaConsumer, testKafkaConnection } = require('./kafkaClient');
 
 const startService = async () => {
+  console.log('init');
   await testKafkaConnection();
   await initKafkaProducer();
   await initKafkaConsumer();

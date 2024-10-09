@@ -1,0 +1,185 @@
+openapi: 3.0.0
+info:
+  title: Device Service API
+  version: '1.0.0'
+  description: API для управления устройствами в системе умного дома.
+  contact:
+    name: API Support
+    url: http://www.smarthome.com/support
+    email: support@smarthome.com
+
+servers:
+  - url: https://api.smarthome.com
+
+paths:
+  /devices:
+    post:
+      summary: Создать новое устройство
+      operationId: createDevice
+      requestBody:
+        description: Данные нового устройства
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceCreateUpdate'
+      responses:
+        '201':
+          description: Устройство успешно создано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+  /devices/{deviceId}:
+    get:
+      summary: Получить информацию об устройстве
+      operationId: getDevice
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          description: ID устройства
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Информация об устройстве
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        '404':
+          description: Устройство не найдено
+    put:
+      summary: Обновить устройство
+      operationId: updateDevice
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          description: ID устройства
+          schema:
+            type: string
+      requestBody:
+        description: Обновленные данные устройства
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceCreateUpdate'
+      responses:
+        '200':
+          description: Устройство успешно обновлено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        '404':
+          description: Устройство не найдено
+    delete:
+      summary: Удалить устройство
+      operationId: deleteDevice
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          description: ID устройства
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Устройство успешно удалено
+        '404':
+          description: Устройство не найдено
+  /devices/{deviceId}/firmware:
+    post:
+      summary: Обновить прошивку устройства
+      operationId: updateFirmware
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          description: ID устройства
+          schema:
+            type: string
+      requestBody:
+        description: Данные обновления прошивки
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FirmwareUpdate'
+      responses:
+        '200':
+          description: Статус обновления прошивки
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FirmwareUpdateStatus'
+        '404':
+          description: Устройство не найдено
+
+components:
+  schemas:
+    Device:
+      type: object
+      properties:
+        deviceId:
+          type: string
+          description: ID устройства
+        name:
+          type: string
+          description: Название устройства
+        type:
+          type: string
+          description: Тип устройства
+        status:
+          type: string
+          enum:
+            - on
+            - off
+          description: Статус устройства
+        timestamp:
+          type: string
+          format: date-time
+          description: Время последнего обновления
+    DeviceCreateUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Название устройства
+        type:
+          type: string
+          description: Тип устройства
+        status:
+          type: string
+          enum:
+            - on
+            - off
+          description: Статус устройства
+    FirmwareUpdate:
+      type: object
+      properties:
+        version:
+          type: string
+          description: Версия прошивки
+    FirmwareUpdateStatus:
+      type: object
+      properties:
+        deviceId:
+          type: string
+          description: ID устройства
+        timestamp:
+          type: string
+          format: date-time
+          description: Время обновления прошивки
+        version:
+          type: string
+          description: Версия прошивки
+        status:
+          type: string
+          enum:
+            - success
+            - failure
+          description: Статус обновления прошивки

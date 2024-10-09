@@ -6,70 +6,70 @@ LAYOUT_WITH_LEGEND()
 
 title Component diagram for Smart home system
 
-Person(customer, "Customer", "A smarthome customer")
+Person(customer, "Customer", "Пользователь умного дома")
 
-Container(webApp, "Web application", "React", "Allows manage home climate")
-Container(bff, "Backend for frontend", "Node.js", "Rest api for rect spa")
-Container(staticServer, "Static Content Server", "Nginx, S3, CDN", "Serves static files (HTML, CSS, JS) for SPA")
-Container(sensor, "Sensor", "heating temperature sensor")
-Container(kuskGateway, "Kusk API Gateway", "Kusk", "Manages and routes API requests to microservices")
-Container(kafka, "Kafka", "Apache Kafka", "Message broker for asynchronous communication")
-ContainerDb(db, "Database", "PostgreSQL", "Stores sensor data, user data, device data")
+Container(webApp, "Web application", "React", "Позволяет управлять климатом в доме")
+Container(bff, "Backend for frontend", "Node.js", "REST API для React SPA")
+Container(staticServer, "Static Content Server", "Nginx, S3, CDN", "Обслуживает статические файлы для SPA")
+Container(sensor, "Sensor", "Датчик температуры", "Датчик отопления")
+Container(kuskGateway, "Kusk API Gateway", "Kusk", "Управляет и маршрутизирует API-запросы к микросервисам")
+ContainerDb(db, "Database", "PostgreSQL", "Хранит данные датчиков, пользователей и устройств")
 
-Container_Boundary(webApp, "Web application", "Allows manage home climate") {
-  Component(homePanel, "Home panel", "React", "Main panel for home climate management")
-  Component(userProfile, "User profile", "React", "User profile management")
-  Component(devicesList, "Devices list", "React", "List of devices")
-  Component(deviceDetails, "Device details", "React", "Details of device")
-  Component(analytics, "Analytics", "React", "Analytics for home climate")  
+Container_Boundary(webApp_boundary, "Web application") {
+  Component(homePanel, "Home panel", "React", "Основная панель управления климатом")
+  Component(userProfile, "User profile", "React", "Управление профилем пользователя")
+  Component(devicesList, "Devices list", "React", "Список устройств")
+  Component(deviceDetails, "Device details", "React", "Детали устройства")
+  Component(analytics, "Analytics", "React", "Аналитика климата дома")  
 }
 
-Container_Boundary(telemetry, "Telemetry") {
-  Component(telemetrySensorData, "Sensor data", "Node.js", "Recieve data from sensors")
-  Component(telemetryDataProcessing, "Data processing", "Node.js", "Process data")
-  Component(telemetryDataAnalysis, "Data analysis", "Node.js", "Analyze data")
-  Component(telemetryAlerts, "Alerts", "Node.js", "Send alerts and notifications")
-  Component(telemetryDataStorage, "Data storage", "Node.js", "Store data in db")
+Container_Boundary(telemetry, "Telemetry Service") {
+  Component(telemetrySensorData, "Sensor data", "Node.js", "Получает данные от датчиков")
+  Component(telemetryDataProcessing, "Data processing", "Node.js", "Обрабатывает данные")
+  Component(telemetryDataAnalysis, "Data analysis", "Node.js", "Анализирует данные")
+  Component(telemetryAlerts, "Alerts", "Node.js", "Отправляет оповещения")
+  Component(telemetryDataStorage, "Data storage", "Node.js", "Хранит данные в БД")
 }
 
-Container_Boundary(device, "Device") {
-  Component(deviceData, "Device data", "Node.js", "Request data from devices")
-  Component(deviceManagement, "Device management", "Node.js", "Manage devices")
-  Component(deviceCommands, "Device commands", "Node.js", "Send commands to device")
-  Component(deviceDataStorage, "Data storage", "Node.js", "Store data in db")
+Container_Boundary(device, "Device Service") {
+  Component(deviceData, "Device data", "Node.js", "Запрашивает данные от устройств")
+  Component(deviceManagement, "Device management", "Node.js", "Управляет устройствами")
+  Component(deviceCommands, "Device commands", "Node.js", "Отправляет команды устройствам")
+  Component(deviceDataStorage, "Data storage", "Node.js", "Хранит данные в БД")
 }
 
-Rel(customer, staticServer, "Requests static files", "HTTPS")
-Rel(customer, webApp, "Interacts with", "HTTPS")
-Rel(customer, sensor, "Customers have sensors in home")
-Rel(webApp, kuskGateway, "API requests", "HTTPS/REST")
-Rel(kuskGateway, bff, "Routes requests", "HTTP (via Service)")
-Rel(bff, kafka, "Produces and Consumes events", "Kafka Protocol")
+Rel(customer, staticServer, "Запрашивает статические файлы", "HTTPS")
+Rel(customer, webApp, "Взаимодействует с", "HTTPS")
+Rel(customer, sensor, "Имеет датчики в доме")
+Rel(webApp, kuskGateway, "API-запросы", "HTTPS/REST")
+Rel(kuskGateway, bff, "Маршрутизирует запросы", "HTTP (через Service)")
+Rel(kuskGateway, telemetry, "Маршрутизирует запросы", "HTTP (через Service)")
+Rel(kuskGateway, device, "Маршрутизирует запросы", "HTTP (через Service)")
+Rel(bff, telemetry, "Синхронные API-вызовы", "HTTP/REST")
+Rel(bff, device, "Синхронные API-вызовы", "HTTP/REST")
 
-' db Rels
-Rel(telemetryDataStorage, db, "Reads and writes data", "JDBC/SSL")
-Rel(deviceDataStorage, db, "Reads and writes data", "JDBC/SSL")
+' Взаимодействие с базой данных
+Rel(telemetryDataStorage, db, "Читает и пишет данные", "JDBC/SSL")
+Rel(deviceDataStorage, db, "Читает и пишет данные", "JDBC/SSL")
 
-' telemetry components internal Rels
-Rel(telemetrySensorData, telemetryDataProcessing, "Sends data")
-Rel(telemetryDataProcessing, telemetryDataAnalysis, "Sends data")
-Rel(telemetryDataAnalysis, telemetryAlerts, "Sends data")
-Rel(telemetryDataProcessing, telemetryDataStorage, "Sends data")
+' Внутренние взаимодействия компонентов телеметрии
+Rel(telemetrySensorData, telemetryDataProcessing, "Передает данные")
+Rel(telemetryDataProcessing, telemetryDataAnalysis, "Передает данные")
+Rel(telemetryDataAnalysis, telemetryAlerts, "Передает данные")
+Rel(telemetryDataProcessing, telemetryDataStorage, "Сохраняет данные")
 
-' telemetry components external Rels
-Rel(telemetrySensorData, kafka, "Consumes events", "Kafka Protocol")
-Rel(telemetryAlerts, kafka, "Produces events", "Kafka Protocol")
+' Внешние взаимодействия компонентов телеметрии
+Rel(telemetrySensorData, sensor, "Получает данные", "HTTP/REST")
+Rel(telemetryAlerts, bff, "Отправляет оповещения", "HTTP/REST")
 
-' device components internal Rels
-Rel(deviceData, deviceManagement, "")
-Rel(deviceCommands, deviceManagement, "")
-Rel(deviceManagement, deviceDataStorage, "")
-Rel(deviceManagement, deviceCommands, "")
+' Внутренние взаимодействия компонентов устройства
+Rel(deviceData, deviceManagement, "Обменивается данными")
+Rel(deviceCommands, deviceManagement, "Обменивается данными")
+Rel(deviceManagement, deviceDataStorage, "Сохраняет данные")
+Rel(deviceManagement, deviceCommands, "Отправляет команды")
 
-' device components external Rels
-Rel(deviceData, kafka, "Produces events", "Kafka Protocol")
-Rel(deviceCommands, sensor, "Sends commands", "MQTT")
-Rel(deviceData, sensor, "Requests data", "MQTT")
-Rel(deviceManagement, kafka, "Consumes and Produces events", "Kafka Protocol")
+' Внешние взаимодействия компонентов устройства
+Rel(deviceData, sensor, "Запрашивает данные", "MQTT")
+Rel(deviceCommands, sensor, "Отправляет команды", "MQTT")
 
 @enduml

@@ -1,4 +1,4 @@
-const { sendMessage } = require('./kafkaClient');
+// const { sendMessage } = require('./kafkaClient');
 
 const handleDeviceCreated = (device) => {
   console.log('Device created:', device);

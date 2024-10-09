@@ -26,27 +26,49 @@ telemetryService:
   env:
     NODE_ENV: production
 
-kafka:
+kusk-gateway:
   enabled: true
-  replicaCount: 1
-  controller:
-    replicaCount: 1
+
+kusk-gateway-envoyfleet:
+  enabled: true
   service:
     type: ClusterIP
-    port: 9092
-  externalAccess:
-    enabled: false
 
-topicCreationJob:
-  image:
-    registry: docker.io  
-    repository: bitnami/kafka
-    tag: 3.3.2
-    pullPolicy: IfNotPresent
-  topics:
-    - device.created
-    - device.updated
-    - device.firmware
-    - device.deleted
-    - telemetry.data
-    - telemetry.alert
+kusk-gateway-api:
+  envoyfleet:
+    name: smarthome-kusk-gateway-envoyfleet
+    namespace: default
+  enabled: true
+
+kusk-gateway-dashboard:
+  enabled: true
+  envoyfleet:
+    name: smarthome-kusk-gateway-envoyfleet
+    namespace: default
+
+postgresql:
+  enabled: true
+  global:
+    postgresql:
+      postgresqlDatabase: smart_home_db
+      postgresqlUsername: admin
+      postgresqlPassword: admin
+  primary:
+    persistence:
+      enabled: true
+      storageClass: "standard"
+      size: 1Gi
+    resources:
+      limits:
+        cpu: "500m"
+        memory: "1Gi"
+      requests:
+        cpu: "250m"
+        memory: "512Mi"
+  service:
+    type: ClusterIP
+    port: 5432
+  securityContext:
+    enabled: true
+    fsGroup: 1001
+    runAsUser: 1001

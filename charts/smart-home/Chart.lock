@@ -1,6 +1,18 @@
 dependencies:
-- name: kafka
+- name: kusk-gateway
+  repository: https://kubeshop.github.io/helm-charts
+  version: 0.0.65
+- name: kusk-gateway-envoyfleet
+  repository: https://kubeshop.github.io/helm-charts
+  version: 0.0.7
+- name: kusk-gateway-api
+  repository: https://kubeshop.github.io/helm-charts
+  version: 0.1.28
+- name: kusk-gateway-dashboard
+  repository: https://kubeshop.github.io/helm-charts
+  version: 0.1.19
+- name: postgresql
   repository: oci://registry-1.docker.io/bitnamicharts
-  version: 30.1.4
-digest: sha256:2ff95593d1f4a70d45be47dd62c230427ffb9cf494d1b0d706748dc983d10b13
-generated: "2024-10-02T12:58:04.744809+03:00"
+  version: 16.0.1
+digest: sha256:9eeea46f32353863fdde26452d7c7aeb910f3a6a9ea120c0cadcdf0596d8766a
+generated: "2024-10-09T14:58:21.92279+03:00"

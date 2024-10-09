@@ -7,11 +7,11 @@ if (process.env.NODE_ENV === 'production') {
   kafkaHost = 'smarthome-kafka:9092';
 }
 
-
 let producer;
 let consumer;
 
 const initKafkaProducer = () => {
+  console.log('try to connect')
   return new Promise((resolve, reject) => {
     const client = new kafka.KafkaClient({ kafkaHost });
     producer = new kafka.Producer(client);

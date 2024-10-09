@@ -23,6 +23,14 @@ spec:
           env:
             - name: NODE_ENV
               value: "{{ .Values.deviceService.env.NODE_ENV }}"
+            - name: POSTGRES_HOST
+              value: postgresql
+            - name: POSTGRES_PORT
+              value: "{{ .Values.postgresql.primary.service.port }}"
+            - name: POSTGRES_USER
+              value: {{ .Values.postgresql.global.postgresqlUsername }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.postgresql.global.postgresqlPassword }}
       
 ---
 apiVersion: v1
