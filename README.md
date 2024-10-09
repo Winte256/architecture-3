@@ -51,10 +51,14 @@
 
 ## C4 Diagrams
 
+### Monolith Context Diagram
+![Monolith Context Diagram](./smarthome/diagrams/out/mololith-context-diagram.png)
+### Er Diagram
+![Er Diagram](./smarthome/diagrams/out/er-database.png)
+### Containers Diagram
 ![Containers Diagram](./smarthome/diagrams/out/containers-diagram.png)
+### Components Diagram
 ![Components Diagram](./smarthome/diagrams/out/components-diagram.png)  
-![Er Diagram](./smarthome/diagrams/out/er-diagram.png)
-![Monolith Context Diagram](./smarthome/diagrams/out/monolith-context-diagram.png)
 
 ## OpenAPI
 
