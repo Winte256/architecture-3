@@ -59,7 +59,7 @@ cmake-build-*/
 
 # IntelliJ
 out/
-!solution/diagrams/out
+!smarthome/diagrams/out
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/

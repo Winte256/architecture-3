@@ -49,10 +49,21 @@
   - `name` - название
   - `description` - описание
 
-## C4 Context Diagram
+## C4 Diagrams
 
-Сохранена в файле `c4-context-diagram.puml` и `c4-context-diagram.png`.
+![Containers Diagram](./diagrams/out/solution/diagrams/containers-diagram/containers-diagram.png)
+![Components Diagram](./diagrams/out/solution/diagrams/components-diagram/components-diagram.png)  
+![Er Diagram](./diagrams/out/solution/diagrams/er-diagram/er-diagram.png)
+![Monolith Context Diagram](./diagrams/out/solution/diagrams/monolith-context-diagram/monolith-context-diagram.png)
 
+## OpenAPI
 
-# Task 2 
+- Спецификация лежит в папке `smarthome/openapi`
+
+# Task 2 (не готов)
+
+- Код лежит в папке smarthome/services (изначально была задумка сделать общение через kafka, но не смог развернуть в кластере чарт от битнами)
+- Чарты helm лежат в папке smarthome/charts
+  - 
+
 
