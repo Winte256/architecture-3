@@ -1,11 +1,10 @@
 openapi: 3.0.0
 info:
   title: Smart Home System API
-  description: API для управления домашним климатом через Web приложение.
   version: 1.0.0
+  description: API для управления домашним климатом через Web приложение.
 servers:
-  - url: https://api.smarthome.com/v1
-    description: Основной сервер API
+  - url: https://smarthome.com/v1/api/web
 
 paths:
   /devices:

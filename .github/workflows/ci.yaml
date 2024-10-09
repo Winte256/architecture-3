@@ -36,8 +36,8 @@ jobs:
       - name: Build and push deviceService image
         uses: docker/build-push-action@v4
         with:
-          context: ./solution/services/deviceService
-          file: ./solution/services/deviceService/Dockerfile
+          context: ./smarthome/services/deviceService
+          file: ./smarthome/services/deviceService/Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ghcr.io/${{ steps.vars.outputs.owner }}/device-service:latest
@@ -45,8 +45,8 @@ jobs:
       - name: Build and push telemetryService image
         uses: docker/build-push-action@v4
         with:
-          context: ./solution/services/telemetryService
-          file: ./solution/services/telemetryService/Dockerfile
+          context: ./smarthome/services/telemetryService
+          file: ./smarthome/services/telemetryService/Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ghcr.io/${{ steps.vars.outputs.owner }}/telemetry-service:latest

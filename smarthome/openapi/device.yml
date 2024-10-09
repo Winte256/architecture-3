@@ -1,18 +1,14 @@
 openapi: 3.0.0
 info:
   title: Device Service API
-  version: '1.0.0'
+  version: 1.0.0
   description: API для управления устройствами в системе умного дома.
-  contact:
-    name: API Support
-    url: http://www.smarthome.com/support
-    email: support@smarthome.com
 
 servers:
-  - url: https://api.smarthome.com
+  - url: https://smarthome.com/api/v1/devices
 
 paths:
-  /devices:
+  /:
     post:
       summary: Создать новое устройство
       operationId: createDevice
@@ -30,7 +26,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Device'
-  /devices/{deviceId}:
+  /{deviceId}:
     get:
       summary: Получить информацию об устройстве
       operationId: getDevice
@@ -91,7 +87,7 @@ paths:
           description: Устройство успешно удалено
         '404':
           description: Устройство не найдено
-  /devices/{deviceId}/firmware:
+  /{deviceId}/firmware:
     post:
       summary: Обновить прошивку устройства
       operationId: updateFirmware

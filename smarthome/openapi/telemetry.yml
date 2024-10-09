@@ -1,18 +1,14 @@
 openapi: 3.0.0
 info:
   title: Telemetry Service API
-  version: '1.0.0'
+  version: 1.0.0
   description: API для телеметрического сервиса в системе умного дома.
-  contact:
-    name: API Support
-    url: http://www.smarthome.com/support
-    email: support@smarthome.com
 
 servers:
-  - url: https://telemetry.smarthome.com
+  - url: https://smarthome.com/api/v1/telemetry
 
 paths:
-  /devices/{deviceId}/data:
+  /{deviceId}/data:
     post:
       summary: Отправить данные устройства
       operationId: sendDeviceData
@@ -33,6 +29,7 @@ paths:
       responses:
         '200':
           description: Данные успешно получены
+
   /alerts:
     post:
       summary: Отправить оповещение
@@ -47,7 +44,6 @@ paths:
       responses:
         '201':
           description: Оповещение успешно создано
-
 components:
   schemas:
     DeviceData:

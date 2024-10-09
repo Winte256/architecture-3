@@ -1,3 +1,5 @@
 apis:
   solution/openapi/bff.yml:
     alias: smart-home-system-api
+  smarthome/openapi/telemetry.yml:
+    alias: telemetry-service-api
