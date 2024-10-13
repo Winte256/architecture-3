@@ -5,10 +5,10 @@ info:
   description: API для управления устройствами в системе умного дома.
 
 servers:
-  - url: https://smarthome.com/api/v1/devices
+  - url: https://smarthome.com/api
 
 paths:
-  /:
+  /v1/devices/:
     post:
       summary: Создать новое устройство
       operationId: createDevice
@@ -26,7 +26,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Device'
-  /{deviceId}:
+  /v1/devices/{deviceId}:
     get:
       summary: Получить информацию об устройстве
       operationId: getDevice
@@ -87,7 +87,7 @@ paths:
           description: Устройство успешно удалено
         '404':
           description: Устройство не найдено
-  /{deviceId}/firmware:
+  /v1/devices/{deviceId}/firmware:
     post:
       summary: Обновить прошивку устройства
       operationId: updateFirmware

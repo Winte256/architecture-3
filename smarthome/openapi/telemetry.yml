@@ -5,10 +5,10 @@ info:
   description: API для телеметрического сервиса в системе умного дома.
 
 servers:
-  - url: https://smarthome.com/api/v1/telemetry
+  - url: https://smarthome.com/api
 
 paths:
-  /{deviceId}/data:
+  /v1/telemetry/{deviceId}/data:
     post:
       summary: Отправить данные устройства
       operationId: sendDeviceData
@@ -30,7 +30,7 @@ paths:
         '200':
           description: Данные успешно получены
 
-  /alerts:
+  /v1/telemetry/alerts:
     post:
       summary: Отправить оповещение
       operationId: sendAlert
